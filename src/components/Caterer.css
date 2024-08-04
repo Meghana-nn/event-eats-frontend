@@ -1,0 +1,73 @@
+.tableForm {
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 1000%;
+    max-width: 400px;
+    margin:  auto;
+    margin-top: 70px;
+    margin-left:200%;
+    padding: 6px;
+    border: 2px solid rgba(70, 44, 62, 0.567);;  
+    border-radius: 8px;
+    background-color: rgba(156, 125, 163, 0.466);
+    
+  }
+
+  /* .background-img {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 1px;
+    
+    width: -500%;
+    height: 100%;
+    
+    max-height: fit-content;
+    z-index: -1;
+    margin-top: 97px;
+    margin-left: 135px;
+    
+    margin-bottom: 100px;
+    background-size: cover;
+    background-position: right;
+    background-repeat: no-repeat;
+  } */
+  
+  
+  .form-row{
+    grid-column: span 2; /* Make the row span across both columns */
+    display: flex;
+    justify-content: center; /* Center-align the content horizontally */
+    margin-top: 10px;
+  }
+  
+  .col {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .submit-btn:hover {
+    background-color: #337205; 
+    transform: scale(1.05); 
+  }
+  
+  .submit-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #280329; 
+  }
+  /*caterer form image bg*/
+  .image-container {
+    flex: 0 0 auto;
+    margin-left: -100px;
+  }
+  
+  
+  .form-image {
+    width: 300px; 
+    height: 300px; 
+  }
+  
+  
+  

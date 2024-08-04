@@ -1,0 +1,80 @@
+.service-tableForm {
+    display:grid;
+    /* grid-template-columns: 2fr 1fr; */
+    margin: auto;
+    padding: 15px;
+    max-width: 800px;
+    margin-top: 70px;
+    margin-left: 700px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(221, 11, 11, 0.419);
+  }
+  
+  .service-tableForm .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .service-tableForm label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .service-tableForm input,
+  .service-tableForm select,
+  .service-tableForm textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .service-tableForm textarea {
+    resize: none;
+    height: 50px;
+  }
+  
+  .service-tableForm button[type="submit"] {
+    background-color: #007bff;
+    display:center;
+    border-color: #007bff;
+    color: #f8f8f8;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .service-tableForm button[type="submit"]:hover {
+    background-color: #1abba3;
+    border-color: #004085;
+    display:center;
+  }
+  
+  .service-tableForm .table {
+    margin-top: 30px;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .service-tableForm .table th,
+  .service-tableForm .table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .service-tableForm .table th {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .service-tableForm .table tbody tr:nth-child(odd) {
+    background-color: #ee4343;
+  }
+  
+  .service-tableForm .table tbody tr:hover {
+    background-color: #e9e9e9;
+  }
+  
