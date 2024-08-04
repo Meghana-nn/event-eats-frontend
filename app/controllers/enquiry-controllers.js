@@ -1,24 +1,22 @@
 const Enquiry=require('../models/enquiry-model')
 const {validationResult}=require('express-validator')
-const enquiryCltr={}
+const enquiryCtrl={}
 
-enquiryCltr.create=async(req,res)=>{
-    const errors=validationResult(req)
-    if(!errors.isEmpty()){
-        return res.status(400).json({errors:errors.array()})
+enquiryCtrl.create = async (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
     }
-    try{
-        const {customerId,catererId,message}=req.body
-        const enquiry=await Enquiry.create({customerId,catererId,message})
+    try {
+        const enquiry = await Enquiry.create(req.body)
         res.status(200).json(enquiry)
-    }
-    catch(err){
-        console.log(err)
-        res.status(500).json({error:'something went wrong'})
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ error: 'Something went wrong' })
     }
 }
 
-enquiryCltr.update=async(req,res)=>{
+enquiryCtrl.update=async(req,res)=>{
     const errors = validationResult(req)
     if(!errors.isEmpty()){
         return res.status(400).json({errors : errors.array()})
@@ -36,11 +34,11 @@ enquiryCltr.update=async(req,res)=>{
     }
 }
 
-enquiryCltr.delete=async(req,res)=>{
+enquiryCtrl.delete=async(req,res)=>{
     try{
         const id =req.params.id
         const body=req
-        const deleteEnquiry=await Enquiry.findOneAndDelete({_id:id},body,{new:true})
+        const deleteEnquiry=await Enquiry.findOneAndDelete({_id:id},)
         res.json(deleteEnquiry)
     }
     catch(err){
@@ -49,7 +47,7 @@ enquiryCltr.delete=async(req,res)=>{
     }
 }
 
-enquiryCltr.list=async(req,res)=>{
+enquiryCtrl.list=async(req,res)=>{
     try{
         const listEnquiry=await Enquiry.find()
         res.json(listEnquiry)
@@ -59,19 +57,19 @@ enquiryCltr.list=async(req,res)=>{
         res.status(500).json({error:'something went wrong'})
     }
 }
-enquiryCltr.response=async(req,res)=>{
+enquiryCtrl.response=async(req,res)=>{
    const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() })
 
         }
         try{
-            const {_id,response}=req.body
-            const responseEnquiry=await Enquiry.findOneAndDelete(_id,{response:response},{new:true})
+            const {_id,response,}=req.body
+            const responseEnquiry=await Enquiry.findOneAndUpdate({_id},{response:response},{new:true})
             res.json(responseEnquiry)
     }catch(err){
-        console.Console.log(err)
+        console.log(err)
         res.status(500).json({error:'something went wrong'})
     }
 }
-module.exports=enquiryCltr
+module.exports=enquiryCtrl

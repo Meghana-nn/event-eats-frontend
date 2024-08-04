@@ -11,7 +11,7 @@ const enquirySchema=new Schema({
     },
     message :String,
     response :String
-},{timeStamps:true})
+},{timestamps:true})
 
 const Enquiry=model('Enquiry',enquirySchema)
 module.exports=Enquiry

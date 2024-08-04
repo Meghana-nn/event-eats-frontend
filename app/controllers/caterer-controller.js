@@ -1,5 +1,6 @@
 const Caterer = require('../models/caterer-model')
 const {validationResult} = require('express-validator')
+
 const catererCtrl = {}
 
 catererCtrl.createCatererService = async(req, res) => {
@@ -11,7 +12,7 @@ catererCtrl.createCatererService = async(req, res) => {
         const body = req.body
         console.log(body)
         const catererService = new Caterer(body)
-        catererService.userId = req.user._id
+        catererService.userId = req.user.id
         await catererService.save()
         res.status(201).json(catererService)    
     }
@@ -19,7 +20,7 @@ catererCtrl.createCatererService = async(req, res) => {
         console.log(err)
         res.status(400).json(err.message)
     }
-},
+}
 catererCtrl.verify = async(req,res) => {
     try{
         const catererId = req.params.id
@@ -27,14 +28,19 @@ catererCtrl.verify = async(req,res) => {
         if (!caterer) {
             return res.status(404).json({ message: 'Caterer not found' })
         }
+        if (caterer.isVerified) {
+            return res.status(400).json({ message: 'Caterer is already verified' });
+        }
         caterer.isVerified = true
         await caterer.save()
+        console.log(caterer)
         res.status(200).json({ message: 'Caterer verified successfully' });
     }
     catch(err){
         res.status(400).json(err.message)
     }
 },
+
 catererCtrl.catererItems = async(req,res) => {
     try{
         const caterers = await Caterer.find()
@@ -51,7 +57,7 @@ catererCtrl.catererByLocation = async(req, res) => {
         res.status(200).json(caterers)
     }
     catch(err){
-        res.status(400).json(err.messsage)
+        res.status(400).json(err.message)
 
     }
 },
@@ -78,4 +84,53 @@ catererCtrl.deleteCaterer = async(req,res) => {
     }
 }
 
-module.exports = catererCtrl
+
+catererCtrl.getCatererById = async (req, res) => {
+    try {
+        const catererId = req.params.id;
+        const caterer = await Caterer.findById(catererId);
+        if (!caterer) {
+            return res.status(404).json({ message: 'Caterer not found' });
+        }
+        res.json(caterer);
+    } catch (err) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+catererCtrl.getPendingCaterers = async (req, res) => {
+    try {
+        
+        const pendingCaterers = await Caterer.find({isVerified:false})
+        res.status(200).json(pendingCaterers);
+    } catch (err) {
+        console.error('Error fetching pending caterers:', err);
+        res.status(500).json({ error: 'Error fetching details' });
+    }
+};
+
+catererCtrl.getVerificationStatus = async (req, res) => {
+    try {
+        const catererId = req.params.id;
+        if (!catererId) {
+            return res.status(400).json({ error: 'Caterer ID is missing' });
+        }
+        console.log('Caterer ID from token:', catererId);
+        const caterer = await Caterer.findById(catererId);
+        if (!caterer) {
+            return res.status(404).json({ error: 'Caterer not found' });
+        }
+         res.status(200).json({ id: caterer._id, isVerified: caterer.isVerified });
+    } catch (err) {
+        console.error('Error fetching verification status:', err.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+module.exports = catererCtrl;
+
+
+  
+
+
+

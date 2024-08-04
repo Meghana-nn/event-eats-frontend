@@ -1,10 +1,14 @@
 const Event = require('../models/event-model')
+// const{validationResult} = require('express-validator')
 const axios = require('axios')
 const _ = require('lodash')
 const eventsCtrl = {}
 
 eventsCtrl.create = async(req, res) => {
-    
+    // const errors = validationResult(req)
+    // if(!errors.isEmpty()) {
+    //     return res.status(400).json({errors: errors.array()})
+    // }
     try{
         const body = req.body
         const address = _.pick(body.address, ['building', 'locality', 'city', 'state', 'pincode', 'country'])
@@ -47,4 +51,14 @@ eventsCtrl.create = async(req, res) => {
         res.status(400).json(err.message)
     }
 }
+eventsCtrl.list=async(req,res)=>{
+    try{
+        const listUsers=await Event.find()
+        res.json(listUsers)
+     }catch(err){
+         res.status(500).json({error:'something went wrong'})
+     }
+ }
+ 
+
 module.exports = eventsCtrl
