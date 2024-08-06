@@ -56,12 +56,14 @@ const CatererServices = () => {
     const fetchServices = async () => {
         try {
             const token = localStorage.getItem('token');
+            console.log(token)
             const response = await axios.get('http://localhost:3010/api/services', {
                 headers: {
                     Authorization: token
                 }
             });
             dispatch({ type: 'SET_SERVICES', payload: response.data });
+            console.log(response.data)
         } catch (err) {
             dispatch({ type: 'SET_ERROR', payload: err.message });
         }
@@ -85,7 +87,7 @@ const CatererServices = () => {
                 }
             });
             fetchServices();
-            navigate('caterer-details', { state: { submittedData: state.services } });
+            navigate('/caterer-details', { state: { submittedData: state.services } });
             dispatch({ type: 'RESET_FORM' });
         } catch (error) {
             dispatch({ type: 'SET_ERROR', payload: error.message });
@@ -109,21 +111,7 @@ const CatererServices = () => {
                             />
                         </FormGroup>
                     </Col>
-                    <Col md={6}>
-                        <FormGroup className="form-group">
-                            <Label for="price">Price:</Label>
-                            <Input
-                                type="number"
-                                name="price"
-                                id="price"
-                                value={state.price}
-                                onChange={handleChange}
-                                required
-                            />
-                        </FormGroup>
-                    </Col>
-                </Row>
-                <Row>
+                   
                     <Col md={6}>
                         <FormGroup className="form-group">
                             <Label for="duration">Duration (hours):</Label>
@@ -137,6 +125,8 @@ const CatererServices = () => {
                             />
                         </FormGroup>
                     </Col>
+                    </Row>
+                    <Row>
                     <Col md={6}>
                         <FormGroup className="form-group">
                             <Label for="vegetarian">Vegetarian Options:</Label>
@@ -153,7 +143,7 @@ const CatererServices = () => {
                             </Input>
                         </FormGroup>
                     </Col>
-                </Row>
+                    <Col md={6}>
                 <FormGroup className="form-group">
                     <Label for="description">Description:</Label>
                     <Input
@@ -168,6 +158,8 @@ const CatererServices = () => {
                 <FormGroup className="form-group">
                     <Button type="submit" color="primary">Add Service</Button>
                 </FormGroup>
+                </Col>
+                </Row>
             </Form>
         </div>
     );

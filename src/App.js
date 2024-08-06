@@ -66,7 +66,7 @@ function App() {
                 <Route path='catererForm' element={<CatererForm/>}/>
                 <Route path="/waiting" element={<WaitingPage/>} />
                 <Route path='/service' element={<CatererService/>}/>
-                <Route path='caterer-details' element={<CatererDetails/>}/>
+                <Route path='/caterer-details' element={<CatererDetails/>}/>
             </Routes>
         </div>
         </AnimatePresence>

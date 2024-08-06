@@ -1,9 +1,9 @@
 import React, { useReducer, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Form,  FormGroup, Label, Input, Button } from 'reactstrap';
-import '../components/Caterer.css'
-
+import { useNavigate } from 'react-router-dom';
+import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { useCatererContext } from '../contexts/CatererContext'; // Fixed import
+import '../components/Caterer.css';
 
 // Initial state for the reducer
 const initialState = {
@@ -47,8 +47,10 @@ const reducer = (state, action) => {
 function CatererForm() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate(); // Initialize useNavigate hook
-  const location = useLocation();
-  const catererId = location.state?.catererId;
+  const { setFormData } = useCatererContext(); // Fixed import
+
+  // Obtain catererId from context or any other source
+  const catererId = null; // Define catererId based on your logic
 
   useEffect(() => {
     if (catererId) {
@@ -87,19 +89,16 @@ function CatererForm() {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     dispatch({
       type: 'SET_NEW_CATERER',
-      payload: { [name]: value },
+      payload: { [name]: type === 'checkbox' ? checked : value },
     });
   };
 
   const validateForm = () => {
     const { name, mobile, location, categories, cuisines } = state.newCaterer;
-    if (!name || !mobile || !location || !categories || !cuisines) {
-      return false;
-    }
-    return true;
+    return name && mobile && location && categories && cuisines;
   };
 
   const handleSubmit = async (e) => {
@@ -136,97 +135,96 @@ function CatererForm() {
       console.error('Error creating/updating caterer:', error.response ? error.response.data : error.message);
     }
   };
-return (
-  <>
-  <div className='background-img'>
-    
-</div>
-  <Form className="tableForm" onSubmit={handleSubmit}>
-      <div className="form-group">
-        <FormGroup>
-          <Label for="name">Name</Label>
-          <Input
-            id="name"
-            name="name"
-            placeholder="Enter name"
-            type="text"
-            value={state.newCaterer.name}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label form="mobile">Mobile</Label>
-          <Input
-            id="mobile"
-            name="mobile"
-            placeholder="Enter mobile number"
-            type="tel"
-            value={state.newCaterer.mobile}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
-      </div>
-      <div className="form-group">
-        <FormGroup>
-          <Label form="location">Location</Label>
-          <Input
-            id="location"
-            name="location"
-            placeholder="Enter valid address"
-            type="text"
-            value={state.newCaterer.location}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label form="categories">Categories</Label>
-          <Input
-            id="categories"
-            name="categories"
-            placeholder="Enter the food categories"
-            type="text"
-            value={state.newCaterer.categories}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
-      </div>
-      <div className="form-group">
-        <FormGroup>
-          <Label for="cuisines">Cuisines</Label>
-          <Input
-            id="cuisines"
-            name="cuisines"
-            placeholder="Enter cuisines"
-            type="text"
-            value={state.newCaterer.cuisines}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
+
+  return (
+    <>
+      <div className='background-img'></div>
+      <Form className="tableForm" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <FormGroup>
+            <Label for="name">Name</Label>
+            <Input
+              id="name"
+              name="name"
+              placeholder="Enter name"
+              type="text"
+              value={state.newCaterer.name}
+              onChange={handleChange}
+              required
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="mobile">Mobile</Label>
+            <Input
+              id="mobile"
+              name="mobile"
+              placeholder="Enter mobile number"
+              type="tel"
+              value={state.newCaterer.mobile}
+              onChange={handleChange}
+              required
+            />
+          </FormGroup>
         </div>
-      <div className="form-group">
-        <FormGroup>
-          <Label for="isVeg">Vegetarian</Label>
-          <Input
-            id="isVeg"
-            name="isVeg"
-            type="select"
-            value={state.newCaterer.isVeg}
-            onChange={handleChange}
-          >
-            <option value={true}>Yes</option>
-            <option value={false}>No</option>
-          </Input>
-        </FormGroup>
-      </div>
-      <div className="form-row">
-        <Button className="submit-btn" type="submit">Submit</Button>
-      </div>
-    </Form>
+        <div className="form-group">
+          <FormGroup>
+            <Label for="location">Location</Label>
+            <Input
+              id="location"
+              name="location"
+              placeholder="Enter valid address"
+              type="text"
+              value={state.newCaterer.location}
+              onChange={handleChange}
+              required
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="categories">Categories</Label>
+            <Input
+              id="categories"
+              name="categories"
+              placeholder="Enter the food categories"
+              type="text"
+              value={state.newCaterer.categories}
+              onChange={handleChange}
+              required
+            />
+          </FormGroup>
+        </div>
+        <div className="form-group">
+          <FormGroup>
+            <Label for="cuisines">Cuisines</Label>
+            <Input
+              id="cuisines"
+              name="cuisines"
+              placeholder="Enter cuisines"
+              type="text"
+              value={state.newCaterer.cuisines}
+              onChange={handleChange}
+              required
+            />
+          </FormGroup>
+        </div>
+        <div className="form-group">
+          <FormGroup>
+            <Label for="isVeg">Vegetarian</Label>
+            <Input
+              id="isVeg"
+              name="isVeg"
+              type="select"
+              value={state.newCaterer.isVeg}
+              onChange={handleChange}
+            >
+              <option value={true}>Yes</option>
+              <option value={false}>No</option>
+            </Input>
+          </FormGroup>
+        </div>
+        <div className="form-row">
+          <Button className="submit-btn" type="submit">Submit</Button>
+        </div>
+      </Form>
     </>
   );
 }
